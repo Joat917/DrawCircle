@@ -321,12 +321,20 @@
             }
 
             const rPowSum = sum(rPow.map(Math.abs));
+            const dThetaList=rPow.map(v=>Math.abs(v)/rPowSum);
 
+            // radius
+            let r = 0;
+            for (let i = 0; i < points.length; i++) {
+                r += rList[i] *dThetaList[i];
+            }
+
+            // minimize square error
             let cosfit = 0;
             let sinfit = 0;
             for (let i = 0; i < points.length; i++) {
-                cosfit += rList[i] * Math.abs(rPow[i]) / rPowSum * Math.cos(thetaRList[i][0]);
-                sinfit += rList[i] * Math.abs(rPow[i]) / rPowSum * Math.sin(thetaRList[i][0]);
+                cosfit += (rList[i]-r) * dThetaList[i] * Math.cos(thetaRList[i][0]);
+                sinfit += (rList[i]-r) * dThetaList[i] * Math.sin(thetaRList[i][0]);
             }
 
             return {
